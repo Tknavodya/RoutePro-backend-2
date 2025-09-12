@@ -190,4 +190,75 @@ class Driver extends User {
             return [];
         }
     }
+
+    public static function getAllDrivers($connection) {
+        try {
+            $sql = "SELECT d.*, u.name as user_name, u.email, u.rating, u.created_at,
+                           CASE 
+                               WHEN d.photo IS NOT NULL AND d.photo != '' 
+                               THEN CONCAT('http://localhost', d.photo)
+                               ELSE 'http://localhost/RoutePro-backend(02)/public/images/defaults/default-driver.svg'
+                           END as photo_url
+                    FROM drivers d 
+                    JOIN users u ON d.user_id = u.id 
+                    ORDER BY u.created_at DESC";
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
+            
+            $drivers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Format the data for frontend consumption
+            foreach ($drivers as &$driver) {
+                $driver['id'] = $driver['user_id'];
+                $driver['name'] = $driver['user_name'];
+                unset($driver['user_name']);
+                
+                // Debug: Log the original photo value
+                error_log("Driver {$driver['name']} photo field: " . ($driver['photo'] ?? 'NULL'));
+                
+                // Ensure photo_url is properly formatted with better fallback logic
+                if ($driver['photo'] && !empty($driver['photo'])) {
+                    $photoPath = $driver['photo'];
+                    
+                    // Handle different photo path formats
+                    if (strpos($photoPath, '/RoutePro-backend(02)/public/uploads/drivers/') === 0) {
+                        // Extract just the filename from the database path
+                        $filename = basename($photoPath);
+                        $localPath = __DIR__ . '/../../public/uploads/drivers/' . $filename;
+                        
+                        if (file_exists($localPath)) {
+                            // Use the correct local path
+                            $driver['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/drivers/' . $filename;
+                        } else {
+                            error_log("Driver photo file not found: " . $localPath);
+                            $driver['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($driver['name']) . '&background=4A90E2&color=fff&size=150';
+                        }
+                    } elseif (strpos($photoPath, '/') === 0) {
+                        // If photo path starts with /, it's already a full path
+                        $driver['photo_url'] = 'http://localhost' . $photoPath;
+                    } else {
+                        // If it's just a filename, add the uploads path
+                        $localPath = __DIR__ . '/../../public/uploads/drivers/' . $photoPath;
+                        if (file_exists($localPath)) {
+                            $driver['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/drivers/' . $photoPath;
+                        } else {
+                            error_log("Driver photo file not found: " . $localPath);
+                            $driver['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($driver['name']) . '&background=4A90E2&color=fff&size=150';
+                        }
+                    }
+                } else {
+                    // Use a personalized avatar based on name
+                    $driver['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($driver['name']) . '&background=4A90E2&color=fff&size=150';
+                }
+                
+                // Debug: Log the final photo URL
+                error_log("Driver {$driver['name']} final photo_url: " . $driver['photo_url']);
+            }
+            
+            return $drivers;
+        } catch (PDOException $e) {
+            error_log("All drivers fetch error: " . $e->getMessage());
+            return [];
+        }
+    }
 }

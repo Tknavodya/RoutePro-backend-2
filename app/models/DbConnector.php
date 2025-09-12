@@ -4,7 +4,7 @@ class DbConnector {
     private $hostname = "localhost";
     private $dbname = "route_pro_db";
     private $dbuser = "root";
-    private $dbpw = "newpassword";
+    private $dbpw = "pubz";
     private $connection = null;
 
     public function getConnection() {

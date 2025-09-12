@@ -192,10 +192,182 @@ class Guide extends User {
             $stmt = $connection->prepare($sql);
             $stmt->execute();
             
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $guides = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Process photo URLs for each guide (same logic as getAllGuides)
+            foreach ($guides as &$guide) {
+                // Debug: Log the original photo value
+                error_log("Available Guide {$guide['name']} photo field: " . ($guide['photo'] ?? 'NULL'));
+                
+                // Ensure photo_url is properly formatted with better fallback logic
+                if ($guide['photo'] && !empty($guide['photo'])) {
+                    $photoPath = $guide['photo'];
+                    
+                    // Handle different photo path formats
+                    if (strpos($photoPath, '/RoutePro-backend(02)/public/uploads/guides/') === 0) {
+                        // Extract just the filename from the database path
+                        $filename = basename($photoPath);
+                        $localPath = __DIR__ . '/../../public/uploads/guides/' . $filename;
+                        
+                        if (file_exists($localPath)) {
+                            // Use the correct local path
+                            $guide['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/guides/' . $filename;
+                        } else {
+                            error_log("Available Guide photo file not found: " . $localPath);
+                            $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                        }
+                    } elseif (strpos($photoPath, '/') === 0) {
+                        // If photo path starts with /, it's already a full path
+                        $guide['photo_url'] = 'http://localhost' . $photoPath;
+                    } else {
+                        // If it's just a filename, add the uploads path
+                        $localPath = __DIR__ . '/../../public/uploads/guides/' . $photoPath;
+                        if (file_exists($localPath)) {
+                            $guide['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/guides/' . $photoPath;
+                        } else {
+                            error_log("Available Guide photo file not found: " . $localPath);
+                            $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                        }
+                    }
+                } else {
+                    // Use a personalized avatar based on name
+                    $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                }
+                
+                // Debug: Log the final photo URL
+                error_log("Available Guide {$guide['name']} final photo_url: " . $guide['photo_url']);
+            }
+            
+            return $guides;
         } catch (PDOException $e) {
             error_log("Available guides fetch error: " . $e->getMessage());
             return [];
+        }
+    }
+
+    public static function getAllGuides($connection) {
+        try {
+            $sql = "SELECT g.*, u.name as user_name, u.email, u.rating, u.created_at,
+                           CASE 
+                               WHEN g.photo IS NOT NULL AND g.photo != '' 
+                               THEN CONCAT('http://localhost', g.photo)
+                               ELSE 'http://localhost/RoutePro-backend(02)/public/images/defaults/default-guide.svg'
+                           END as photo_url
+                    FROM guides g 
+                    JOIN users u ON g.user_id = u.id 
+                    GROUP BY g.user_id, u.id
+                    ORDER BY u.created_at DESC";
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
+            
+            $guides = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Format the data for frontend consumption and ensure uniqueness
+            $uniqueGuides = [];
+            $seenUserIds = [];
+            
+            foreach ($guides as $guide) {
+                // Skip if we've already processed this user_id
+                if (in_array($guide['user_id'], $seenUserIds)) {
+                    error_log("Skipping duplicate guide for user_id: " . $guide['user_id']);
+                    continue;
+                }
+                
+                $seenUserIds[] = $guide['user_id'];
+                
+                $guide['id'] = $guide['user_id'];
+                $guide['name'] = $guide['user_name'];
+                unset($guide['user_name']);
+                
+                // Debug: Log the original photo value
+                error_log("Guide {$guide['name']} photo field: " . ($guide['photo'] ?? 'NULL'));
+                
+                // Ensure photo_url is properly formatted with better fallback logic
+                if ($guide['photo'] && !empty($guide['photo'])) {
+                    $photoPath = $guide['photo'];
+                    
+                    // Handle different photo path formats
+                    if (strpos($photoPath, '/RoutePro-backend(02)/public/uploads/guides/') === 0) {
+                        // Extract just the filename from the database path
+                        $filename = basename($photoPath);
+                        $localPath = __DIR__ . '/../../public/uploads/guides/' . $filename;
+                        
+                        if (file_exists($localPath)) {
+                            // Use the correct local path
+                            $guide['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/guides/' . $filename;
+                        } else {
+                            error_log("Guide photo file not found: " . $localPath);
+                            $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                        }
+                    } elseif (strpos($photoPath, '/') === 0) {
+                        // If photo path starts with /, it's already a full path
+                        $guide['photo_url'] = 'http://localhost' . $photoPath;
+                    } else {
+                        // If it's just a filename, add the uploads path
+                        $localPath = __DIR__ . '/../../public/uploads/guides/' . $photoPath;
+                        if (file_exists($localPath)) {
+                            $guide['photo_url'] = 'http://localhost/RoutePro-backend(02)/public/uploads/guides/' . $photoPath;
+                        } else {
+                            error_log("Guide photo file not found: " . $localPath);
+                            $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                        }
+                    }
+                } else {
+                    // Use a personalized avatar based on name
+                    $guide['photo_url'] = 'https://ui-avatars.com/api/?name=' . urlencode($guide['name']) . '&background=28A745&color=fff&size=150';
+                }
+                
+                // Debug: Log the final photo URL
+                error_log("Guide {$guide['name']} final photo_url: " . $guide['photo_url']);
+                
+                $uniqueGuides[] = $guide;
+            }
+            
+            error_log("Total guides found: " . count($guides) . ", Unique guides after deduplication: " . count($uniqueGuides));
+            
+            return $uniqueGuides;
+        } catch (PDOException $e) {
+            error_log("All guides fetch error: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public static function findDuplicateGuides($connection) {
+        try {
+            $sql = "SELECT user_id, COUNT(*) as count 
+                    FROM guides 
+                    GROUP BY user_id 
+                    HAVING COUNT(*) > 1
+                    ORDER BY count DESC";
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
+            
+            $duplicates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Found " . count($duplicates) . " users with duplicate guide records");
+            
+            return $duplicates;
+        } catch (PDOException $e) {
+            error_log("Find duplicate guides error: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public static function removeDuplicateGuides($connection) {
+        try {
+            // Keep only the most recent record for each user_id
+            $sql = "DELETE g1 FROM guides g1
+                    INNER JOIN guides g2 
+                    WHERE g1.user_id = g2.user_id 
+                    AND g1.id < g2.id";
+            $stmt = $connection->prepare($sql);
+            $result = $stmt->execute();
+            $deletedRows = $stmt->rowCount();
+            
+            error_log("Removed $deletedRows duplicate guide records");
+            return $deletedRows;
+        } catch (PDOException $e) {
+            error_log("Remove duplicate guides error: " . $e->getMessage());
+            return false;
         }
     }
 

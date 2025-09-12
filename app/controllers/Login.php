@@ -63,7 +63,7 @@ try {
 
     // Create PDO connection
     try {
-        $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "newpassword");
+        $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         throw new Exception("Database connection failed");

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Default Profile Image</title>
+    <style>
+        .profile-default {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .profile-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+        .profile-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .profile-subtext {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .guide-default {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+    </style>
+</head>
+<body>
+    <h2>Default Profile Images</h2>
+    
+    <h3>Driver Default:</h3>
+    <div class="profile-default" id="driverDefault">
+        <div class="profile-icon">🚗</div>
+        <div class="profile-text">DRIVER</div>
+        <div class="profile-subtext">Default Profile</div>
+    </div>
+    
+    <br><br>
+    
+    <h3>Guide Default:</h3>
+    <div class="profile-default guide-default" id="guideDefault">
+        <div class="profile-icon">🧭</div>
+        <div class="profile-text">GUIDE</div>
+        <div class="profile-subtext">Default Profile</div>
+    </div>
+    
+    <br><br>
+    <p>Use these URLs as default images:</p>
+    <ul>
+        <li>Driver: <code>/RoutePro-backend(02)/public/images/defaults/default-driver.html</code></li>
+        <li>Guide: <code>/RoutePro-backend(02)/public/images/defaults/default-guide.html</code></li>
+    </ul>
+</body>
+</html>

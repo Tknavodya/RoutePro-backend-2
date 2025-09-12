@@ -7,7 +7,7 @@ class Model {
 
     public function __construct() {
         $database = new Database();
-        $this->db = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "newpassword");
+        $this->db = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 

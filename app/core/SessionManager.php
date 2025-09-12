@@ -11,7 +11,7 @@ class SessionManager {
         }
         
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "newpassword");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Session Manager DB connection error: " . $e->getMessage());

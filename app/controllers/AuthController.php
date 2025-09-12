@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../core/Controller.php';
+require_once __DIR__ . '/../core/SessionManager.php';
 require_once __DIR__ . '/../models/Driver.php';
 require_once __DIR__ . '/../models/Guide.php';
 require_once __DIR__ . '/../models/Traveller.php';
@@ -33,7 +34,7 @@ class AuthController extends Controller {
 
     public function __construct() {
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "newpassword");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -93,37 +94,48 @@ class AuthController extends Controller {
             }
 
             if ($loggedInUser) {
-                // Start session and store user data
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
-                $_SESSION['user_id'] = $loggedInUser->getId();
-                $_SESSION['user_email'] = $loggedInUser->getEmail();
-                $_SESSION['user_role'] = $loggedInUser->getRole();
-                $_SESSION['user_name'] = $loggedInUser->getName();
+                // Use SessionManager to create proper session
+                $sessionManager = SessionManager::getInstance();
+                $sessionResult = $sessionManager->createSession(
+                    $loggedInUser->getId(),
+                    $loggedInUser->getEmail(),
+                    $loggedInUser->getRole(),
+                    $loggedInUser->getName()
+                );
 
-                // Get profile data
-                $profileData = $loggedInUser->getProfileData($this->connection);
+                if ($sessionResult['success']) {
+                    // Get profile data
+                    $profileData = $loggedInUser->getProfileData($this->connection);
 
-                $this->sendResponse([
-                    'success' => true,
-                    'message' => 'Login successful',
-                    // backward-compatible top-level fields
-                    'userId' => $loggedInUser->getId(),
-                    'role'   => $loggedInUser->getRole(),
-                    'name'   => $loggedInUser->getName(),
-                    'email'  => $loggedInUser->getEmail(),
-                    'rating' => $loggedInUser->getRating(),
-                    // nested user object
-                    'user' => [
-                        'id' => $loggedInUser->getId(),
-                        'name' => $loggedInUser->getName(),
-                        'email' => $loggedInUser->getEmail(),
-                        'role' => $loggedInUser->getRole(),
+                    $this->sendResponse([
+                        'success' => true,
+                        'message' => 'Login successful',
+                        // backward-compatible top-level fields
+                        'userId' => $loggedInUser->getId(),
+                        'role'   => $loggedInUser->getRole(),
+                        'name'   => $loggedInUser->getName(),
+                        'email'  => $loggedInUser->getEmail(),
                         'rating' => $loggedInUser->getRating(),
-                        'profile' => $profileData
-                    ]
-                ]);
+                        // nested user object
+                        'user' => [
+                            'id' => $loggedInUser->getId(),
+                            'name' => $loggedInUser->getName(),
+                            'email' => $loggedInUser->getEmail(),
+                            'role' => $loggedInUser->getRole(),
+                            'rating' => $loggedInUser->getRating(),
+                            'profile' => $profileData
+                        ],
+                        'session' => [
+                            'token' => $sessionResult['session_token'],
+                            'expires_at' => $sessionResult['expires_at']
+                        ]
+                    ]);
+                } else {
+                    $this->sendResponse([
+                        'success' => false,
+                        'message' => 'Failed to create session'
+                    ], 500);
+                }
             } else {
                 $this->sendResponse([
                     'success' => false, 
@@ -191,12 +203,12 @@ class AuthController extends Controller {
     }
 
     public function logout() {
-        session_start();
-        session_destroy();
+        $sessionManager = SessionManager::getInstance();
+        $result = $sessionManager->destroySession();
         
         $this->sendResponse([
-            'success' => true,
-            'message' => 'Logged out successfully'
+            'success' => $result['success'],
+            'message' => $result['message']
         ]);
     }
 

@@ -2,7 +2,7 @@
 class Database {
     private $host = "localhost";
     private $user = "root";
-    private $pass = "newpassword";
+    private $pass = "pubz";
     private $dbname = "route_pro_db";
 
     public $conn;
