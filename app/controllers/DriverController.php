@@ -25,12 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require_once __DIR__ . '/../core/Controller.php';
 require_once __DIR__ . '/../models/Driver.php';
 
-class DriverController extends Controller {
+class DriverController extends Controller
+{
     private $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -38,10 +40,11 @@ class DriverController extends Controller {
         }
     }
 
-    public function updateStatus() {
+    public function updateStatus()
+    {
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['status'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -52,7 +55,7 @@ class DriverController extends Controller {
 
             // Check if email is provided for email-based update
             $email = $input['email'] ?? null;
-            
+
             if ($email) {
                 // Email-based update - using same approach as getProfile
                 // First, get the user_id for this email
@@ -60,7 +63,7 @@ class DriverController extends Controller {
                 $getUserStmt = $this->connection->prepare($getUserSql);
                 $getUserStmt->execute([$email]);
                 $userData = $getUserStmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if (!$userData) {
                     $this->sendResponse([
                         'success' => false,
@@ -68,14 +71,14 @@ class DriverController extends Controller {
                     ], 404);
                     return;
                 }
-                
+
                 // Now update the drivers table
                 $updateSql = "UPDATE drivers SET status = ? WHERE user_id = ?";
                 $updateStmt = $this->connection->prepare($updateSql);
                 $success = $updateStmt->execute([$input['status'], $userData['user_id']]);
-                
+
                 error_log("Status update attempt - Email: $email, User ID: {$userData['user_id']}, Status: {$input['status']}, Success: " . ($success ? 'true' : 'false') . ", Rows affected: " . $updateStmt->rowCount());
-                
+
                 if ($success && $updateStmt->rowCount() > 0) {
                     $this->sendResponse([
                         'success' => true,
@@ -93,7 +96,7 @@ class DriverController extends Controller {
                 $currentUser = $this->getCurrentUser();
                 $driver = new Driver();
                 $driver->setId($currentUser['user_id']);
-                
+
                 if ($driver->updateStatus($this->connection, $input['status'])) {
                     $this->sendResponse([
                         'success' => true,
@@ -106,7 +109,6 @@ class DriverController extends Controller {
                     ], 500);
                 }
             }
-
         } catch (Exception $e) {
             error_log("Status update error: " . $e->getMessage());
             $this->sendResponse([
@@ -116,12 +118,13 @@ class DriverController extends Controller {
         }
     }
 
-    public function updateLocation() {
+    public function updateLocation()
+    {
         $this->requireRole(['driver', 'admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['location'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -133,7 +136,7 @@ class DriverController extends Controller {
             $currentUser = $this->getCurrentUser();
             $driver = new Driver();
             $driver->setId($currentUser['user_id']);
-            
+
             if ($driver->updateLocation($this->connection, $input['location'])) {
                 $this->sendResponse([
                     'success' => true,
@@ -145,7 +148,6 @@ class DriverController extends Controller {
                     'message' => 'Failed to update location'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("Location update error: " . $e->getMessage());
             $this->sendResponse([
@@ -155,15 +157,15 @@ class DriverController extends Controller {
         }
     }
 
-    public function getAvailableDrivers() {
+    public function getAvailableDrivers()
+    {
         try {
             $drivers = Driver::getAvailableDrivers($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'drivers' => $drivers
             ]);
-
         } catch (Exception $e) {
             error_log("Available drivers fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -173,16 +175,16 @@ class DriverController extends Controller {
         }
     }
 
-    public function getAllDrivers() {
+    public function getAllDrivers()
+    {
         try {
             $drivers = Driver::getAllDrivers($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'drivers' => $drivers,
                 'total' => count($drivers)
             ]);
-
         } catch (Exception $e) {
             error_log("All drivers fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -192,15 +194,16 @@ class DriverController extends Controller {
         }
     }
 
-    public function getProfile() {
+    public function getProfile()
+    {
         // Check if email parameter is provided for email-based lookup
         $email = $_GET['email'] ?? null;
-        
+
         // Only require role authentication if no email is provided (session-based lookup)
         if (!$email) {
             $this->requireRole(['driver', 'admin']);
         }
-        
+
         try {
             if ($email) {
                 // Email-based lookup
@@ -210,7 +213,7 @@ class DriverController extends Controller {
                         FROM users u 
                         JOIN drivers d ON u.id = d.user_id 
                         WHERE u.email = ? AND u.role = 'driver'";
-                
+
                 $stmt = $this->connection->prepare($sql);
                 $stmt->execute([$email]);
                 $driverData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -218,19 +221,19 @@ class DriverController extends Controller {
                 // Session-based lookup (existing functionality)
                 $currentUser = $this->getCurrentUser();
                 $userId = $currentUser['user_id'];
-                
+
                 $sql = "SELECT u.name as user_name, u.email, 
                                d.name, d.phone, d.license_no, d.vehicle_type, 
                                d.experience, d.status, d.location, d.photo
                         FROM users u 
                         JOIN drivers d ON u.id = d.user_id 
                         WHERE u.id = ?";
-                
+
                 $stmt = $this->connection->prepare($sql);
                 $stmt->execute([$userId]);
                 $driverData = $stmt->fetch(PDO::FETCH_ASSOC);
             }
-            
+
             if (!$driverData) {
                 $errorMessage = $email ? "No driver found with email: $email" : "Driver not found";
                 $this->sendResponse([
@@ -239,7 +242,7 @@ class DriverController extends Controller {
                 ], 404);
                 return;
             }
-            
+
             // Use driver name if available, otherwise use user name
             $finalData = [
                 'name' => $driverData['name'] ?: $driverData['user_name'],
@@ -252,12 +255,11 @@ class DriverController extends Controller {
                 'location' => $driverData['location'] ?: 'Not specified',
                 'photo' => $driverData['photo'] ?: null
             ];
-            
+
             $this->sendResponse([
                 'success' => true,
                 'data' => $finalData
             ]);
-            
         } catch (Exception $e) {
             error_log("Get driver profile error: " . $e->getMessage());
             $this->sendResponse([
@@ -267,13 +269,14 @@ class DriverController extends Controller {
         }
     }
 
-    public function updateProfile() {
+    public function updateProfile()
+    {
         try {
             $input = $this->getInput();
-            
+
             // Check if email is provided for email-based update
             $email = $input['email'] ?? null;
-            
+
             if ($email) {
                 // Email-based update
                 // First, get the user_id for this email
@@ -281,7 +284,7 @@ class DriverController extends Controller {
                 $getUserStmt = $this->connection->prepare($getUserSql);
                 $getUserStmt->execute([$email]);
                 $userData = $getUserStmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if (!$userData) {
                     $this->sendResponse([
                         'success' => false,
@@ -289,9 +292,9 @@ class DriverController extends Controller {
                     ], 404);
                     return;
                 }
-                
+
                 $user_id = $userData['user_id'];
-                
+
                 // Validate required fields for email-based update
                 $required = ['name', 'phone', 'vehicle_type', 'experience'];
                 $missing = [];
@@ -300,7 +303,7 @@ class DriverController extends Controller {
                         $missing[] = $field;
                     }
                 }
-                
+
                 if (!empty($missing)) {
                     $this->sendResponse([
                         'success' => false,
@@ -314,7 +317,7 @@ class DriverController extends Controller {
                         name = ?, phone = ?, license_no = ?, 
                         vehicle_type = ?, experience = ?, location = ?
                         WHERE user_id = ?";
-                
+
                 $stmt = $this->connection->prepare($sql);
                 $success = $stmt->execute([
                     $input['name'],
@@ -325,15 +328,15 @@ class DriverController extends Controller {
                     $input['location'] ?? '',
                     $user_id
                 ]);
-                
+
                 if ($success) {
                     // Also update user table name
                     $user_sql = "UPDATE users SET name = ? WHERE id = ?";
                     $user_stmt = $this->connection->prepare($user_sql);
                     $user_stmt->execute([$input['name'], $user_id]);
-                    
+
                     error_log("Driver profile updated successfully for email: $email");
-                    
+
                     $this->sendResponse([
                         'success' => true,
                         'message' => 'Profile updated successfully'
@@ -347,11 +350,11 @@ class DriverController extends Controller {
             } else {
                 // Session-based update (existing functionality)
                 $this->requireRole(['driver', 'admin']);
-                
+
                 // Validate required fields
                 $required = ['name', 'phone', 'license_no', 'vehicle_type', 'experience'];
                 $missing = $this->validateRequired($input, $required);
-                
+
                 if (!empty($missing)) {
                     $this->sendResponse([
                         'success' => false,
@@ -364,9 +367,9 @@ class DriverController extends Controller {
                         name = ?, phone = ?, license_no = ?, 
                         vehicle_type = ?, experience = ?, location = ?
                         WHERE user_id = ?";
-                
+
                 $currentUser = $this->getCurrentUser();
-                
+
                 $stmt = $this->connection->prepare($sql);
                 $stmt->bindValue(1, $input['name']);
                 $stmt->bindValue(2, $input['phone']);
@@ -375,7 +378,7 @@ class DriverController extends Controller {
                 $stmt->bindValue(5, $input['experience']);
                 $stmt->bindValue(6, $input['location'] ?? null);
                 $stmt->bindValue(7, $currentUser['user_id']);
-                
+
                 if ($stmt->execute()) {
                     // Also update user table
                     $user_sql = "UPDATE users SET name = ? WHERE id = ?";
@@ -383,7 +386,7 @@ class DriverController extends Controller {
                     $user_stmt->bindValue(1, $input['name']);
                     $user_stmt->bindValue(2, $currentUser['user_id']);
                     $user_stmt->execute();
-                    
+
                     $this->sendResponse([
                         'success' => true,
                         'message' => 'Profile updated successfully'
@@ -395,7 +398,6 @@ class DriverController extends Controller {
                     ], 500);
                 }
             }
-
         } catch (Exception $e) {
             error_log("Profile update error: " . $e->getMessage());
             $this->sendResponse([
@@ -405,11 +407,12 @@ class DriverController extends Controller {
         }
     }
 
-    public function uploadPhoto() {
+    public function uploadPhoto()
+    {
         try {
             // Check if email is provided
             $email = $_POST['email'] ?? null;
-            
+
             if (!$email) {
                 $this->sendResponse([
                     'success' => false,
@@ -431,7 +434,7 @@ class DriverController extends Controller {
             $fileSize = $uploadedFile['size'];
             $fileType = $uploadedFile['type'];
             $fileName = $uploadedFile['name'];
-            
+
             // Validate file size (max 5MB)
             if ($fileSize > 5 * 1024 * 1024) {
                 $this->sendResponse([
@@ -456,7 +459,7 @@ class DriverController extends Controller {
             $getUserStmt = $this->connection->prepare($getUserSql);
             $getUserStmt->execute([$email]);
             $userData = $getUserStmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if (!$userData) {
                 $this->sendResponse([
                     'success' => false,
@@ -468,11 +471,11 @@ class DriverController extends Controller {
             // Create unique filename
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
             $uniqueFileName = 'driver_' . $userData['user_id'] . '_' . time() . '.' . $fileExtension;
-            
+
             // Set upload path
             $uploadDir = __DIR__ . '/../../public/uploads/drivers/';
             $uploadPath = $uploadDir . $uniqueFileName;
-            
+
             // Create directory if it doesn't exist
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -482,11 +485,11 @@ class DriverController extends Controller {
             if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
                 // Update database with photo path
                 $photoUrl = '/RoutePro-backend(02)/public/uploads/drivers/' . $uniqueFileName;
-                
+
                 $updateSql = "UPDATE drivers SET photo = ? WHERE user_id = ?";
                 $updateStmt = $this->connection->prepare($updateSql);
                 $success = $updateStmt->execute([$photoUrl, $userData['user_id']]);
-                
+
                 if ($success) {
                     $this->sendResponse([
                         'success' => true,
@@ -510,7 +513,6 @@ class DriverController extends Controller {
                     'message' => 'Failed to upload file'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("Photo upload error: " . $e->getMessage());
             $this->sendResponse([

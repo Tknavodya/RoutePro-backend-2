@@ -25,13 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require_once __DIR__ . '/../core/Controller.php';
 require_once __DIR__ . '/../models/Admin.php';
 
-class AdminController extends Controller {
+class AdminController extends Controller
+{
     private $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -39,20 +41,20 @@ class AdminController extends Controller {
         }
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             $users = $admin->getAllUsers($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'users' => $users
             ]);
-
         } catch (Exception $e) {
             error_log("All users fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -62,12 +64,13 @@ class AdminController extends Controller {
         }
     }
 
-    public function getUsersByRole() {
+    public function getUsersByRole()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['role'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -78,14 +81,13 @@ class AdminController extends Controller {
 
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             $users = $admin->getUsersByRole($this->connection, $input['role']);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'users' => $users
             ]);
-
         } catch (Exception $e) {
             error_log("Users by role fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -95,12 +97,13 @@ class AdminController extends Controller {
         }
     }
 
-    public function deleteUser() {
+    public function deleteUser()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['user_id'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -111,7 +114,7 @@ class AdminController extends Controller {
 
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             if ($admin->deleteUser($this->connection, $input['user_id'])) {
                 $this->sendResponse([
                     'success' => true,
@@ -123,7 +126,6 @@ class AdminController extends Controller {
                     'message' => 'Failed to delete user'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("User deletion error: " . $e->getMessage());
             $this->sendResponse([
@@ -133,12 +135,13 @@ class AdminController extends Controller {
         }
     }
 
-    public function updateUserRole() {
+    public function updateUserRole()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['user_id']) || !isset($input['new_role'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -149,7 +152,7 @@ class AdminController extends Controller {
 
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             if ($admin->updateUserRole($this->connection, $input['user_id'], $input['new_role'])) {
                 $this->sendResponse([
                     'success' => true,
@@ -161,7 +164,6 @@ class AdminController extends Controller {
                     'message' => 'Failed to update user role'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("User role update error: " . $e->getMessage());
             $this->sendResponse([
@@ -171,20 +173,20 @@ class AdminController extends Controller {
         }
     }
 
-    public function getSystemStats() {
+    public function getSystemStats()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             $stats = $admin->getSystemStats($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'stats' => $stats
             ]);
-
         } catch (Exception $e) {
             error_log("System stats fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -194,15 +196,16 @@ class AdminController extends Controller {
         }
     }
 
-    public function getProfile() {
+    public function getProfile()
+    {
         $this->requireRole(['admin']);
-        
+
         try {
             $admin = new Admin();
             $admin->setId($_SESSION['user_id']);
-            
+
             $profileData = $admin->getProfileData($this->connection);
-            
+
             if ($profileData) {
                 $this->sendResponse([
                     'success' => true,
@@ -214,7 +217,6 @@ class AdminController extends Controller {
                     'message' => 'Profile not found'
                 ], 404);
             }
-
         } catch (Exception $e) {
             error_log("Admin profile fetch error: " . $e->getMessage());
             $this->sendResponse([

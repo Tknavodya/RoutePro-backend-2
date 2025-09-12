@@ -82,7 +82,7 @@ class ForgotPasswordController extends Controller {
             $this->storeOTP($user['id'], $email, $otp, $expires);
 
             // Send OTP email
-            require_once __DIR__ . '/../services/WorkingEmailService.php';
+            require_once __DIR__ . '/../services/EmailService.php';
             $emailService = new EmailService();
             $emailResult = $emailService->sendOTPEmail($email, $otp);
 
@@ -90,6 +90,7 @@ class ForgotPasswordController extends Controller {
                 $this->sendResponse([
                     'success' => true,
                     'message' => 'OTP has been sent to your email.',
+                    'debug_otp' => $otp, // Remove this in production
                     'email_status' => 'sent'
                 ]);
             } else {
@@ -99,6 +100,7 @@ class ForgotPasswordController extends Controller {
                 $this->sendResponse([
                     'success' => true,
                     'message' => 'If an account with that email exists, an OTP has been sent.',
+                    'debug_otp' => $otp, // Remove this in production - keeping for development
                     'email_status' => 'failed',
                     'email_error' => $emailResult['message']
                 ]);
@@ -266,7 +268,7 @@ class ForgotPasswordController extends Controller {
 
             // Verify reset token
             $currentTime = date('Y-m-d H:i:s');
-            $sql = "SELECT user_id FROM password_resets WHERE token = ? AND expires_at > ? AND otp_verified = 1 AND used = 0";
+            $sql = "SELECT user_id FROM password_resets WHERE token = ? AND expires_at > ? AND used = 0";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([$input['token'], $currentTime]);
             $resetRecord = $stmt->fetch(PDO::FETCH_ASSOC);

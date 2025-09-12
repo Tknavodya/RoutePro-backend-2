@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login Controller - Updated to work with new MVC inheritance architecture
  * Maintains backward compatibility while using the new User inheritance structure
@@ -63,7 +64,7 @@ try {
 
     // Create PDO connection
     try {
-        $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+        $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "");
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         throw new Exception("Database connection failed");
@@ -82,7 +83,7 @@ try {
     } else {
         // Try each user type if role not specified (for backward compatibility)
         $roles = ['driver', 'guide', 'traveller', 'admin'];
-        
+
         foreach ($roles as $role) {
             $user = createUserByRole($role, null, $email, $password);
             if ($user) {
@@ -101,7 +102,6 @@ try {
         "success" => false,
         "error" => "Invalid email or password."
     ]);
-
 } catch (Exception $e) {
     error_log("Login error: " . $e->getMessage());
     http_response_code(500);
@@ -114,7 +114,8 @@ try {
 /**
  * Create user object based on role using inheritance
  */
-function createUserByRole($role, $name = null, $email = null, $password = null) {
+function createUserByRole($role, $name = null, $email = null, $password = null)
+{
     switch ($role) {
         case 'driver':
             return new Driver($name, $email, $password);
@@ -132,12 +133,13 @@ function createUserByRole($role, $name = null, $email = null, $password = null) 
 /**
  * Handle successful login response
  */
-function handleSuccessfulLogin($loggedInUser) {
+function handleSuccessfulLogin($loggedInUser)
+{
     global $sessionManager;
-    
+
     // Create session using SessionManager with all required parameters
     $sessionResult = $sessionManager->createSession(
-        $loggedInUser->getId(), 
+        $loggedInUser->getId(),
         $loggedInUser->getEmail(),
         $loggedInUser->getRole(),
         $loggedInUser->getName()
@@ -164,4 +166,3 @@ function handleSuccessfulLogin($loggedInUser) {
         ]);
     }
 }
-?>

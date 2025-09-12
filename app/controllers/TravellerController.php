@@ -25,12 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require_once __DIR__ . '/../core/Controller.php';
 require_once __DIR__ . '/../models/Traveller.php';
 
-class TravellerController extends Controller {
+class TravellerController extends Controller
+{
     private $connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -38,12 +40,13 @@ class TravellerController extends Controller {
         }
     }
 
-    public function updateStatus() {
+    public function updateStatus()
+    {
         $this->requireRole(['traveller', 'admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['status'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -55,7 +58,7 @@ class TravellerController extends Controller {
             $currentUser = $this->getCurrentUser();
             $traveller = new Traveller();
             $traveller->setId($currentUser['user_id']);
-            
+
             if ($traveller->updateStatus($this->connection, $input['status'])) {
                 $this->sendResponse([
                     'success' => true,
@@ -67,7 +70,6 @@ class TravellerController extends Controller {
                     'message' => 'Failed to update status'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("Status update error: " . $e->getMessage());
             $this->sendResponse([
@@ -77,12 +79,13 @@ class TravellerController extends Controller {
         }
     }
 
-    public function updateLocation() {
+    public function updateLocation()
+    {
         $this->requireRole(['traveller', 'admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['location'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -94,7 +97,7 @@ class TravellerController extends Controller {
             $currentUser = $this->getCurrentUser();
             $traveller = new Traveller();
             $traveller->setId($currentUser['user_id']);
-            
+
             if ($traveller->updateLocation($this->connection, $input['location'])) {
                 $this->sendResponse([
                     'success' => true,
@@ -106,7 +109,6 @@ class TravellerController extends Controller {
                     'message' => 'Failed to update location'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("Location update error: " . $e->getMessage());
             $this->sendResponse([
@@ -116,15 +118,15 @@ class TravellerController extends Controller {
         }
     }
 
-    public function getAvailableTravellers() {
+    public function getAvailableTravellers()
+    {
         try {
             $travellers = Traveller::getAvailableTravellers($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'travellers' => $travellers
             ]);
-
         } catch (Exception $e) {
             error_log("Available travellers fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -134,17 +136,18 @@ class TravellerController extends Controller {
         }
     }
 
-    public function getProfile() {
+    public function getProfile()
+    {
         // Check if email parameter is provided for email-based lookup
         $email = $_GET['email'] ?? null;
-        
+
         error_log("🔍 TravellerController::getProfile() called with email: " . ($email ?: 'none'));
-        
+
         // Only require role authentication if no email is provided (session-based lookup)
         if (!$email) {
             $this->requireRole(['traveller', 'admin']);
         }
-        
+
         try {
             if ($email) {
                 error_log("📧 Email-based lookup for: " . $email);
@@ -155,18 +158,18 @@ class TravellerController extends Controller {
                             FROM users u 
                             JOIN travellers t ON u.id = t.user_id 
                             WHERE u.email = ? AND u.role = 'traveller'";
-                    
+
                     $stmt = $this->connection->prepare($sql);
                     $stmt->execute([$email]);
                     $travellerData = $stmt->fetch(PDO::FETCH_ASSOC);
                 } catch (PDOException $e) {
                     if (strpos($e->getMessage(), 'Unknown column') !== false && strpos($e->getMessage(), 'photo') !== false) {
                         error_log("⚠️ Photo column doesn't exist, adding it...");
-                        
+
                         // Add photo column
                         $addColumnSql = "ALTER TABLE travellers ADD COLUMN photo VARCHAR(255) DEFAULT NULL";
                         $this->connection->exec($addColumnSql);
-                        
+
                         // Retry the query
                         $stmt = $this->connection->prepare($sql);
                         $stmt->execute([$email]);
@@ -175,31 +178,31 @@ class TravellerController extends Controller {
                         throw $e; // Re-throw if it's a different error
                     }
                 }
-                
+
                 error_log("📊 Query result: " . json_encode($travellerData));
             } else {
                 // Session-based lookup (existing functionality)
                 $currentUser = $this->getCurrentUser();
                 $userId = $currentUser['user_id'];
-                
+
                 try {
                     $sql = "SELECT u.name as user_name, u.email, 
                                    t.name, t.phone, t.created_at, t.photo
                             FROM users u 
                             JOIN travellers t ON u.id = t.user_id 
                             WHERE u.id = ?";
-                    
+
                     $stmt = $this->connection->prepare($sql);
                     $stmt->execute([$userId]);
                     $travellerData = $stmt->fetch(PDO::FETCH_ASSOC);
                 } catch (PDOException $e) {
                     if (strpos($e->getMessage(), 'Unknown column') !== false && strpos($e->getMessage(), 'photo') !== false) {
                         error_log("⚠️ Photo column doesn't exist, adding it...");
-                        
+
                         // Add photo column
                         $addColumnSql = "ALTER TABLE travellers ADD COLUMN photo VARCHAR(255) DEFAULT NULL";
                         $this->connection->exec($addColumnSql);
-                        
+
                         // Retry the query
                         $stmt = $this->connection->prepare($sql);
                         $stmt->execute([$userId]);
@@ -209,7 +212,7 @@ class TravellerController extends Controller {
                     }
                 }
             }
-            
+
             if (!$travellerData) {
                 $errorMessage = $email ? "No traveller found with email: $email" : "Traveller not found";
                 error_log("❌ " . $errorMessage);
@@ -232,13 +235,14 @@ class TravellerController extends Controller {
                 'member_since' => $travellerData['created_at'] ?: 'Unknown',
                 'photo' => isset($travellerData['photo']) ? $travellerData['photo'] : null
             ];
-            
+
             error_log("✅ Final data being sent: " . json_encode($finalData));
-            
+
             $this->sendResponse([
                 'success' => true,
                 'data' => $finalData
-            ]);        } catch (Exception $e) {
+            ]);
+        } catch (Exception $e) {
             error_log("Get traveller profile error: " . $e->getMessage());
             $this->sendResponse([
                 'success' => false,
@@ -247,23 +251,24 @@ class TravellerController extends Controller {
         }
     }
 
-    public function updateProfile() {
+    public function updateProfile()
+    {
         // Allow session-based updates or email-based updates
         $email = $_GET['email'] ?? null;
-        
+
         // Only require role authentication if no email is provided (session-based lookup)
         if (!$email) {
             $this->requireRole(['traveller', 'admin']);
         }
-        
+
         try {
             $input = $this->getInput();
             error_log("🔄 Update profile input: " . json_encode($input));
-            
+
             // Validate required fields
             $required = ['name', 'phone'];
             $missing = $this->validateRequired($input, $required);
-            
+
             if (!empty($missing)) {
                 $this->sendResponse([
                     'success' => false,
@@ -278,7 +283,7 @@ class TravellerController extends Controller {
                 $find_stmt = $this->connection->prepare($find_sql);
                 $find_stmt->execute([$email]);
                 $user_data = $find_stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if (!$user_data) {
                     $this->sendResponse([
                         'success' => false,
@@ -286,7 +291,7 @@ class TravellerController extends Controller {
                     ], 404);
                     return;
                 }
-                
+
                 $user_id = $user_data['user_id'];
             } else {
                 // Session-based update
@@ -300,7 +305,7 @@ class TravellerController extends Controller {
             $stmt->bindValue(1, $input['name']);
             $stmt->bindValue(2, $input['phone']);
             $stmt->bindValue(3, $user_id);
-            
+
             if ($stmt->execute()) {
                 // Also update user table name
                 $user_sql = "UPDATE users SET name = ? WHERE id = ?";
@@ -308,9 +313,9 @@ class TravellerController extends Controller {
                 $user_stmt->bindValue(1, $input['name']);
                 $user_stmt->bindValue(2, $user_id);
                 $user_stmt->execute();
-                
+
                 error_log("✅ Profile updated successfully for user_id: " . $user_id);
-                
+
                 $this->sendResponse([
                     'success' => true,
                     'message' => 'Profile updated successfully'
@@ -322,7 +327,6 @@ class TravellerController extends Controller {
                     'message' => 'Failed to update profile'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("❌ Traveller profile update error: " . $e->getMessage());
             $this->sendResponse([
@@ -332,14 +336,15 @@ class TravellerController extends Controller {
         }
     }
 
-    public function getBookingHistory() {
+    public function getBookingHistory()
+    {
         $this->requireRole(['traveller', 'admin']);
-        
+
         try {
             // Get traveller data first
             $currentUser = $this->getCurrentUser();
             $travellerData = Traveller::getByUserId($this->connection, $currentUser['user_id']);
-            
+
             if (!$travellerData) {
                 $this->sendResponse([
                     'success' => false,
@@ -350,14 +355,13 @@ class TravellerController extends Controller {
 
             $traveller = new Traveller();
             $traveller->setTravellerId($travellerData['id']);
-            
+
             $bookings = $traveller->getBookingHistory($this->connection);
-            
+
             $this->sendResponse([
                 'success' => true,
                 'bookings' => $bookings
             ]);
-
         } catch (Exception $e) {
             error_log("Booking history fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -367,12 +371,13 @@ class TravellerController extends Controller {
         }
     }
 
-    public function createBooking() {
+    public function createBooking()
+    {
         $this->requireRole(['traveller', 'admin']);
-        
+
         try {
             $input = $this->getInput();
-            
+
             if (!isset($input['route_id'])) {
                 $this->sendResponse([
                     'success' => false,
@@ -384,7 +389,7 @@ class TravellerController extends Controller {
             // Get traveller data
             $currentUser = $this->getCurrentUser();
             $travellerData = Traveller::getByUserId($this->connection, $currentUser['user_id']);
-            
+
             if (!$travellerData) {
                 $this->sendResponse([
                     'success' => false,
@@ -395,14 +400,14 @@ class TravellerController extends Controller {
 
             $traveller = new Traveller();
             $traveller->setTravellerId($travellerData['id']);
-            
+
             $success = $traveller->createBooking(
                 $this->connection,
                 $input['route_id'],
                 $input['driver_id'] ?? null,
                 $input['guide_id'] ?? null
             );
-            
+
             if ($success) {
                 $this->sendResponse([
                     'success' => true,
@@ -414,7 +419,6 @@ class TravellerController extends Controller {
                     'message' => 'Failed to create booking'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("Booking creation error: " . $e->getMessage());
             $this->sendResponse([
@@ -424,11 +428,12 @@ class TravellerController extends Controller {
         }
     }
 
-    public function uploadPhoto() {
+    public function uploadPhoto()
+    {
         try {
             // Check if email is provided
             $email = $_POST['email'] ?? null;
-            
+
             if (!$email) {
                 $this->sendResponse([
                     'success' => false,
@@ -450,7 +455,7 @@ class TravellerController extends Controller {
             $fileSize = $uploadedFile['size'];
             $fileType = $uploadedFile['type'];
             $fileName = $uploadedFile['name'];
-            
+
             // Validate file size (max 5MB)
             if ($fileSize > 5 * 1024 * 1024) {
                 $this->sendResponse([
@@ -475,7 +480,7 @@ class TravellerController extends Controller {
             $getUserStmt = $this->connection->prepare($getUserSql);
             $getUserStmt->execute([$email]);
             $userData = $getUserStmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if (!$userData) {
                 $this->sendResponse([
                     'success' => false,
@@ -487,11 +492,11 @@ class TravellerController extends Controller {
             // Create unique filename
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
             $uniqueFileName = 'traveller_' . $userData['user_id'] . '_' . time() . '.' . $fileExtension;
-            
+
             // Set upload path
             $uploadDir = __DIR__ . '/../../public/uploads/travellers/';
             $uploadPath = $uploadDir . $uniqueFileName;
-            
+
             // Create directory if it doesn't exist
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -501,24 +506,24 @@ class TravellerController extends Controller {
             if (move_uploaded_file($uploadedFile['tmp_name'], $uploadPath)) {
                 // Update database with photo path - but first check if travellers table has photo column
                 $photoUrl = '/RoutePro-backend(02)/public/uploads/travellers/' . $uniqueFileName;
-                
+
                 // Check if photo column exists in travellers table
                 $checkColumnSql = "SHOW COLUMNS FROM travellers LIKE 'photo'";
                 $checkStmt = $this->connection->prepare($checkColumnSql);
                 $checkStmt->execute();
                 $photoColumnExists = $checkStmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if (!$photoColumnExists) {
                     // Add photo column to travellers table
                     $addColumnSql = "ALTER TABLE travellers ADD COLUMN photo VARCHAR(255) DEFAULT NULL";
                     $this->connection->exec($addColumnSql);
                     error_log("✅ Added photo column to travellers table");
                 }
-                
+
                 $updateSql = "UPDATE travellers SET photo = ? WHERE user_id = ?";
                 $updateStmt = $this->connection->prepare($updateSql);
                 $success = $updateStmt->execute([$photoUrl, $userData['user_id']]);
-                
+
                 if ($success) {
                     error_log("✅ Photo uploaded and database updated for traveller: " . $email);
                     $this->sendResponse([
@@ -543,7 +548,6 @@ class TravellerController extends Controller {
                     'message' => 'Failed to upload file'
                 ], 500);
             }
-
         } catch (Exception $e) {
             error_log("❌ Traveller photo upload error: " . $e->getMessage());
             $this->sendResponse([
