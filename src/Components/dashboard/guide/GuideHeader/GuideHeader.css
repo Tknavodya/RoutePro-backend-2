@@ -1,0 +1,202 @@
+.driver-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  margin-bottom: 30px;
+  justify-content: space-between; /* Changed back to space-between for better layout */
+  align-items: flex-start; /* Changed to flex-start for better alignment */
+  box-sizing: border-box;
+}
+
+/* 🖼️ Guide Photo */
+.driver-photo {
+  width: 300px !important;
+  height: 300px !important;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin: 0 auto; /* Center the photo */
+}
+
+.photo-wrapper { 
+  position: relative; 
+  display: inline-block;
+  margin-left: 30px; /* Add some margin like DriverHeader */
+}
+
+.edit-overlay { 
+  position: absolute; 
+  bottom: 12px; 
+  right: 12px; 
+  background: #28a745; 
+  color: #fff; 
+  border: none; 
+  border-radius: 10px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+  box-shadow: 0 6px 16px rgba(13, 38, 76, 0.18); 
+  z-index: 2; 
+}
+
+.photo-status { 
+  position: absolute; 
+  top: 12px; 
+  left: 12px; 
+  background: rgba(255,255,255,0.9); 
+  padding: 6px 10px; 
+  border-radius: 8px; 
+  font-weight: 600; 
+}
+
+.photo-status .available { color: #28a745; } 
+.photo-status .unavailable { color: #dc3545; }
+.photo-status .nonavailable { color: #dc3545; }
+
+/* 👤 Guide Info - PROPERLY SPACED */
+.driver-info {
+  flex: 2;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  margin-left: 20px; /* Add space away from photo */
+}
+
+.driver-info h2 {
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.status-display {
+  margin-top: 7px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.status-label.available {
+  color: green;
+}
+
+.status-label.unavailable {
+  color: red;
+}
+
+.status-label.nonavailable {
+  color: red;
+}
+
+/* 📊 Earnings Column - CENTERED ITEMS */
+.earnings-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+  padding: 10px;
+  align-items: center; /* Center the earnings cards horizontally */
+  justify-content: center; /* Center the earnings cards vertically */
+}
+
+.earning-card { 
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%); 
+  border-radius: 14px; 
+  padding: 16px; 
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08); 
+  text-align: center;
+  width: 100%; /* Take full width of container */
+}
+
+.earning-card-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; /* Center the header content */
+  gap: 8px; /* Add gap between title and badge */
+}
+
+.badge.primary { 
+  background: #1f7aec; 
+  color: #fff; 
+  font-size: 11px; 
+  padding: 4px 8px; 
+  border-radius: 999px; 
+}
+
+.amount { 
+  font-size: 28px; 
+  font-weight: 800; 
+  color: #0f172a; 
+  margin: 8px 0 2px;
+  text-align: center; 
+}
+
+.subtext { 
+  font-size: 12px; 
+  color: #64748b; 
+  margin-bottom: 10px;
+  text-align: center; 
+}
+
+.earning-card h4 {
+  margin-bottom: 4px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.earning-card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745;
+  text-align: center;
+}
+
+/* 📱 Responsive Tweaks */
+@media (max-width: 768px) {
+  .driver-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .driver-info {
+    margin-left: 0;
+    text-align: center; /* Ensure center alignment on mobile */
+  }
+
+  .earnings-column {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .earning-card {
+    flex: 1 1 40%;
+    min-width: 250px;
+  }
+}
+
+/* Additional centering utilities */
+.guide-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.guide-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.guide-detail-item {
+  text-align: center;
+  margin: 4px 0;
+}

@@ -1,0 +1,158 @@
+/* Add this for reviews spacing */
+.guide-reviews {
+  margin-top: 5rem;
+  font-size: 0.95rem;
+}
+
+.guide-review-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+  color: #444;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guide-details-container {
+  max-width: 980px;
+  margin: 3rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.guide-details-container h2 {
+  color: #04614e;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.guide-details-container p {
+  margin: 0.5rem 0;
+  color: #333;
+  text-align: left;
+}
+
+.guide-details-container button {
+  margin-top: 6rem;
+  padding: 0.75rem 2rem;
+  background: #04614e;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+  margin-left: 18rem; /* moves button a bit to the right */
+  margin-right: 0;
+}
+
+.guide-image-details {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guide-info-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.guide-details-container button:hover {
+  background: #028a6c;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.popup-content button {
+  margin: 1rem 0.5rem 0 0.5rem;
+  padding: 0.75rem 2rem;
+  background: #04614e;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+}
+
+.popup-content button:hover {
+  background: #028a6c;
+}
+
+/* Guide-specific styles */
+.guide-languages {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-left: 0.5rem;
+}
+
+.language-tag {
+  background: #e8f5f3;
+  color: #04614e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.guide-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.star {
+  color: #ffd700;
+  font-size: 1.2rem;
+}
+
+.star.filled {
+  color: #ffa500;
+}
+
+.rating-text {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.guide-experience {
+  background: #f0f8ff;
+  color: #04614e;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}

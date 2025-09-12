@@ -1,0 +1,638 @@
+/* Container styles */
+.dashboard {
+  background-color: #f0f4f7;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dashboard Header */
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.headerRow h2 {
+  color: #2c3e50;
+  margin-bottom: 6px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Section card styles */
+section {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+}
+
+section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(13, 38, 76, 0.12);
+}
+
+/* Titles */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 6px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+/* Paragraph and list styling */
+p, li {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* Action button styling */
+.actionButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #218838;
+}
+
+/* Quick action buttons */
+button {
+  background-color: #50e888;
+  color: #150404;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  margin: 0.3rem 0.3rem 0 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2fb1b9;
+}
+
+/* Upcoming trips layout */
+section > div {
+  background-color: #f9fafc;
+  border-left: 4px solid #3fc1c9;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+}
+
+/* Recent activity list */
+ul {
+  list-style: disc inside;
+  padding-left: 1rem;
+}
+.profileSection {
+  padding: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.photoWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profileImage {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #28a745;
+  flex-shrink: 0;
+}
+
+.editOverlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(13, 38, 76, 0.18);
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.profileDetails {
+  flex: 2;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profileDetails h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.profileDetails p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Traveler Info - Large Name Style */
+.travelerInfo {
+  flex: 2;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.travelerInfo h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.travelerInfo p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.travelStats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+  padding: 10px;
+  
+}
+
+
+
+
+/* Travel Stats */
+.statsBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+  padding: 10px;
+}
+
+.statsBlock div {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.statsBlock div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(13, 38, 76, 0.12);
+}
+
+.statsBlock strong {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  display: block;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.statsBlock span {
+  font-size: 0.9rem;
+  color: #606c76;
+  font-weight: 500;
+}
+/* This class aligns the welcome text and logout button in one row */
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Optional: style for the logout button (you can keep using .action-button from earlier) */
+.action-button {
+  padding: 8px 16px;
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.action-button:hover {
+  background-color: #e64545;
+}
+
+/* Edit Profile Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  color: #2b2e4a;
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #333;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+}
+
+.editForm {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2b2e4a;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #3fc1c9;
+  box-shadow: 0 0 0 2px rgba(63, 193, 201, 0.2);
+}
+
+.formGroup input:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.helpText {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #3fc1c9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #2fb1b9;
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background-color: #ffe6e6;
+  color: #d32f2f;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #ffcccb;
+}
+
+.successMessage {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #c8e6c9;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.editButton {
+  padding: 0.5rem 1rem;
+  background-color: #3fc1c9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: #2fb1b9;
+}
+
+/* Photo wrapper with overlay */
+.photoWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.editOverlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: #3fc1c9;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(13, 38, 76, 0.18);
+  z-index: 2;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.editOverlay:hover {
+  background-color: #2fb1b9;
+}
+
+/* Modal styles matching driver design */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modalContent {
+  background: #fff;
+  width: min(720px, 92vw);
+  border-radius: 16px;
+  box-shadow: 0 30px 60px rgba(13, 38, 76, 0.35);
+  overflow: hidden;
+}
+
+.modalHeader,
+.modalFooter {
+  padding: 16px 20px;
+  background: #f8fafc;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modalBody {
+  padding: 18px 20px;
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.iconBtn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.formGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGrid label span {
+  font-weight: 500;
+  color: #2b2e4a;
+  font-size: 0.9rem;
+}
+
+.formGrid input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.formGrid input:focus {
+  outline: none;
+  border-color: #3fc1c9;
+  box-shadow: 0 0 0 2px rgba(63, 193, 201, 0.2);
+}
+
+.disabledInput {
+  background-color: #f5f5f5 !important;
+  color: #999 !important;
+  cursor: not-allowed !important;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.helpText {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.modalFooter {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.btn.ghost {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.btn.ghost:hover {
+  background: #e2e8f0;
+}
+
+.btn.primary {
+  background: #3fc1c9;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #2fb1b9;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

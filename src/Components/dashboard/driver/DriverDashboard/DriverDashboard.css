@@ -1,0 +1,220 @@
+.dashboard {
+  background-color: #f0f4f7;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.welcome-section {
+  flex-grow: 1;
+  min-width: 250px;
+}
+
+.dashboard h1 {
+  color: #2c3e50;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: #606c76;
+  margin-bottom: 20px;
+}
+
+.action-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #218838;
+}
+
+/* Summary Cards Row */
+.summary-row {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  flex: 1 1 30%;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  box-sizing: border-box;
+  min-width: 250px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(13, 38, 76, 0.12);
+}
+
+/* Status Styles */
+.status {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.status.available {
+  color: rgb(58, 138, 58);
+}
+
+.status.unavailable {
+  color: red;
+}
+
+/* Dynamic Toggle Button Based on Status */
+.status-toggle {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-bottom: 10px;
+}
+
+.status-toggle.available {
+  background-color: #28a745;
+}
+
+.status-toggle.available:hover {
+  background-color: #218838;
+}
+
+.status-toggle.unavailable {
+  background-color: #dc3545;
+}
+
+.status-toggle.unavailable:hover {
+  background-color: #c82333;
+}
+
+/* View Toggle Buttons */
+.view-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+}
+
+.view-buttons button {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background-color: transparent;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.view-buttons button:hover {
+  background-color: #e6f4e9;
+}
+
+.view-buttons button.active {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+}
+
+/* Section View */
+.view-container {
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .summary-row {
+    flex-direction: column;
+  }
+
+  .summary-card {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .view-buttons {
+    flex-direction: column;
+  }
+
+  .view-buttons button {
+    width: 100%;
+    border-top: 1px solid #ddd;
+  }
+
+  .view-buttons button:first-child {
+    border-top: none;
+  }
+
+  .dashboard {
+    padding: 15px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-button {
+    margin-top: 12px;
+    width: fit-content;
+  }
+}
+.status-toggle {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.status-toggle.available {
+  background-color: #c82333;
+}
+
+.status-toggle.available:hover {
+  background-color: #dc3545;
+}
+
+.status-toggle.unavailable {
+  background-color: #218838;
+}
+
+.status-toggle.unavailable:hover {
+  background-color: #28a745;
+}

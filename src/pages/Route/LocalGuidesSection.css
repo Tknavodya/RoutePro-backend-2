@@ -1,0 +1,186 @@
+/* === LOCAL GUIDES SECTION === */
+.guides-section {
+  padding: 2rem 1rem;
+  background: #f9fafa;
+}
+
+.guides-section h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, #ffeb3b, #4caf50);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.guides-section .subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+/* === CARDS LAYOUT === */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.guide-card {
+  flex: 0 0 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.guide-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+}
+
+.guide-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  background: #eaeaea;
+  transition: transform 0.3s ease;
+}
+
+.guide-card:hover .guide-image {
+  transform: scale(1.05);
+}
+
+.image-container {
+  position: relative;
+}
+
+.price-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.badge.verified {
+  right: 10px;
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.badge.recommended {
+  right: 80px;
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.card-body {
+  padding: 1.2rem;
+}
+
+.card-body h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.rating {
+  color: #f5b50a;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #f5b50a;
+}
+
+.rating-text {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.guide-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.guide-info li {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.view-details-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #04614e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 1rem;
+}
+
+.view-details-btn:hover {
+  background: #028a6c;
+}
+
+/* === UTILITY === */
+h1, h2, h3, h4, h5, h6, p.subtitle {
+  text-align: center;
+}
+
+/* === RESPONSIVE TWEAKS === */
+@media (max-width: 768px) {
+  .guides-section {
+    padding: 2rem 1rem;
+  }
+  
+  .guide-card {
+    flex: 0 0 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .guide-card {
+    flex: 0 0 100%;
+    max-width: 320px;
+  }
+}

@@ -1,0 +1,28 @@
+.reviews-panel {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.response-box {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-left: 4px solid green;
+  margin-top: 10px;
+  border-radius: 6px;
+}

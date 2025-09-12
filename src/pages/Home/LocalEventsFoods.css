@@ -1,0 +1,99 @@
+.events-section {
+  background: url('../../assets/images/new bg.jpg') no-repeat center center/cover;
+  position: relative;
+  color: white;
+  padding: 4rem 2rem;
+  min-height: 90vh;
+  /* opacity: 75%;  ←❌ REMOVE THIS */
+}
+
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.7); /* adjust opacity as needed */
+  padding: 3rem 2rem;
+  border-radius: 10px;
+}
+
+
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+h1 {
+  font-size: 2.8rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.highlight-teal {
+     background: linear-gradient(90deg, #2a7f62, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.highlight-white {
+  color: #fff;
+  font-weight: 700;
+}
+
+.highlight-bold {
+  color: #ffd700;
+  font-weight: 800;
+}
+
+.description {
+  color: #ddd;
+  font-size: 1rem;
+  max-width: 800px;
+  margin-bottom: 1.5rem;
+}
+
+.explore-btn {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 25px;
+  background: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: background 0.3s;
+}
+
+.explore-btn:hover {
+  background: #f0f0f0;
+}
+
+.food-cards {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.food-card {
+  background: white;
+  color: black;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 150px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.food-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.food-card p {
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.food-card:hover {
+  transform: scale(1.05);
+}

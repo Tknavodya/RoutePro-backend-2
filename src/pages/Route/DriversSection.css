@@ -1,0 +1,269 @@
+/* === DRIVERS SECTION === */
+.drivers-section {
+  padding: 2rem 1rem;
+  background: #f9fafa;
+}
+
+
+
+.drivers-section h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, #ffeb3b, #4caf50);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.drivers-section .subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+/* === CARDS LAYOUT === */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* ✅ THIS centers your cards in flex! */
+  gap: 1.5rem;
+}
+
+
+.card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+}
+
+.driver-image {
+  width: 100%;
+  height: 200px; /* controls image height */
+  object-fit: cover; /* fills the box nicely */
+  display: block;
+}
+
+.card-content {
+  padding: 1.2rem;
+}
+
+h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.rating {
+  color: #f5b50a;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #f5b50a;
+}
+
+.reviews {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.driver-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.driver-info li {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* === UTILITY === */
+h1, h2, h3, h4, h5, h6, p.subtitle {
+  text-align: center;
+}
+
+/* === RESPONSIVE TWEAKS === */
+@media (max-width: 768px) {
+  .drivers-section {
+    padding: 3rem 1rem;
+  }
+
+  .drivers-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .drivers-section .subtitle {
+    font-size: 0.95rem;
+  }
+}
+.driver-card {
+  flex: 0 0 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.driver-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+}
+
+.image-container {
+  position: relative;
+}
+
+.price-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.badge.verified {
+  right: 10px;
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.badge.recommended {
+  right: 80px;
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.card-body {
+  padding: 1.2rem;
+}
+
+.card-body h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.view-details-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #04614e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 1rem;
+}
+
+.view-details-btn:hover {
+  background: #028a6c;
+}
+/* === MODAL === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 90%;
+  position: relative; /* Fixed from 'center' */
+  text-align: left;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-content p {
+  color: #130f0f;
+  line-height: 1.5;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+.book-now {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.book-now:hover {
+  background: linear-gradient(135deg, #45a049, #3d9140);
+  transform: translateY(-2px);
+}
+.booking-message {
+  color: #48df4d; /* green shade */
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}

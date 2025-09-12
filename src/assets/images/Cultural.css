@@ -1,0 +1,90 @@
+.cultural-container {
+  text-align: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+
+.cultural-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #fdd835, #43a047); /* yellow to green */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cultural-container p {
+  margin-bottom: rem;
+  color: #555;
+}
+
+.cultural-container select {
+  padding: 0.75rem 2.5rem 0.75rem 1.5rem;
+  margin: 1rem 0 2rem 0;
+  font-size: 1rem;
+  border: 2px solid #43a047;
+  border-radius: 50px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  appearance: none; /* Removes default arrow for full control */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%2343a047' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px 8px;
+}
+
+
+
+.cultural-container select:hover {
+  border-color: #fdd835;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1rem;
+  text-align: left;
+}
+
+.card-content h3 {
+  margin: 0 0 0.5rem;
+}
+
+.card-content p {
+  margin: 0.3rem 0;
+  color: #333;
+}
+.selected-district-text {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #333;
+}

@@ -1,0 +1,105 @@
+.primary-btn, .secondary-btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: none;
+  margin: 0 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.primary-btn {
+  background-color: #00a46c;
+  color: white;
+}
+
+.primary-btn:hover {
+  background-color: #008a5b;
+}
+
+.secondary-btn {
+  border: 2px solid #00a46c;
+  background: white;
+  color: #00a46c;
+}
+
+.secondary-btn:hover {
+  background-color: #e6fff4;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.green { color: #00a46c; }
+.teal { color: #00c1a5; }
+.blue { color: #4d73ff; }
+
+.hero-section {
+ 
+  background-size: cover;
+  background-position: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #333;
+ 
+  
+}
+
+.hero-buttons {
+  margin-bottom: 3rem;
+}
+
+
+.feature-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  text-align: left;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: icon grows on hover */
+.feature-card:hover .icon-wrapper {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .icon-wrapper {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card:hover {
+  transform: scale(1.03);
+  background-color: #f9f9f9;
+}

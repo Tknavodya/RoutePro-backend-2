@@ -1,0 +1,17 @@
+.reviews-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+}
+
+.review-card {
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(13, 38, 76, 0.06);
+}
+
+/* Reply UI removed; reviews are read-only now */

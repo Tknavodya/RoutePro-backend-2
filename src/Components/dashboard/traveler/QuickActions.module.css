@@ -1,0 +1,72 @@
+.quickActions {
+  margin-bottom: 30px;
+}
+
+.quickActions h3 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.actionContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(13, 38, 76, 0.08);
+  min-width: 200px;
+}
+
+.actionBtn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(13, 38, 76, 0.12);
+}
+
+.actionBtn:active {
+  transform: translateY(0);
+}
+
+.actionIcon {
+  font-size: 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .actionContainer {
+    flex-direction: column;
+  }
+  
+  .actionBtn {
+    min-width: auto;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .actionBtn {
+    padding: 14px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .actionIcon {
+    font-size: 1.3rem;
+  }
+}

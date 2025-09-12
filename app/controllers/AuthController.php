@@ -29,14 +29,12 @@ require_once __DIR__ . '/../models/Guide.php';
 require_once __DIR__ . '/../models/Traveller.php';
 require_once __DIR__ . '/../models/Admin.php';
 
-class AuthController extends Controller
-{
+class AuthController extends Controller {
     private $connection;
 
-    public function __construct()
-    {
+    public function __construct() {
         try {
-            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "");
+            $this->connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -44,15 +42,14 @@ class AuthController extends Controller
         }
     }
 
-    public function login()
-    {
+    public function login() {
         try {
             $input = $this->getInput();
-
+            
             // Old validation required role as well. Now only require email and password.
             if (!isset($input['email']) || !isset($input['password'])) {
                 $this->sendResponse([
-                    'success' => false,
+                    'success' => false, 
                     'message' => 'Email and password are required'
                 ], 400);
                 return;
@@ -74,7 +71,7 @@ class AuthController extends Controller
 
                 if (!$user) {
                     $this->sendResponse([
-                        'success' => false,
+                        'success' => false, 
                         'message' => 'Invalid user role'
                     ], 400);
                     return;
@@ -141,35 +138,35 @@ class AuthController extends Controller
                 }
             } else {
                 $this->sendResponse([
-                    'success' => false,
+                    'success' => false, 
                     'message' => 'Invalid email or password'
                 ], 401);
             }
+
         } catch (Exception $e) {
             error_log("Login error: " . $e->getMessage());
             $this->sendResponse([
-                'success' => false,
+                'success' => false, 
                 'message' => 'Login failed: Server error'
             ], 500);
         }
     }
 
-    public function register()
-    {
+    public function register() {
         try {
             // Clear any output buffer to ensure clean JSON response
             if (ob_get_level()) {
                 ob_clean();
             }
-
+            
             error_log("Registration request received");
             $input = $this->getInput();
             error_log("Input data: " . json_encode($input));
-
+            
             if (!isset($input['role'])) {
                 error_log("Missing role in input");
                 $this->sendResponse([
-                    'success' => false,
+                    'success' => false, 
                     'message' => 'User role is required'
                 ], 400);
                 return;
@@ -181,44 +178,43 @@ class AuthController extends Controller
             if (!$user) {
                 error_log("Failed to create user object");
                 $this->sendResponse([
-                    'success' => false,
+                    'success' => false, 
                     'message' => 'Invalid user role or missing required fields'
                 ], 400);
                 return;
             }
 
             $result = $user->register($this->connection);
-
+            
             if ($result['success']) {
                 $this->sendResponse($result, 201);
             } else {
                 $this->sendResponse($result, 400);
             }
+
         } catch (Exception $e) {
             error_log("Registration error: " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
             $this->sendResponse([
-                'success' => false,
+                'success' => false, 
                 'message' => 'Registration failed: Server error'
             ], 500);
         }
     }
 
-    public function logout()
-    {
+    public function logout() {
         $sessionManager = SessionManager::getInstance();
         $result = $sessionManager->destroySession();
-
+        
         $this->sendResponse([
             'success' => $result['success'],
             'message' => $result['message']
         ]);
     }
 
-    public function profile()
-    {
+    public function profile() {
         session_start();
-
+        
         if (!isset($_SESSION['user_id'])) {
             $this->sendResponse([
                 'success' => false,
@@ -230,9 +226,9 @@ class AuthController extends Controller
         try {
             $user = $this->createUserByRole($_SESSION['user_role']);
             $user->setId($_SESSION['user_id']);
-
+            
             $profileData = $user->getProfileData($this->connection);
-
+            
             if ($profileData) {
                 $this->sendResponse([
                     'success' => true,
@@ -244,6 +240,7 @@ class AuthController extends Controller
                     'message' => 'Profile not found'
                 ], 404);
             }
+
         } catch (Exception $e) {
             error_log("Profile fetch error: " . $e->getMessage());
             $this->sendResponse([
@@ -253,8 +250,7 @@ class AuthController extends Controller
         }
     }
 
-    private function createUserByRole($role, $name = null, $email = null, $password = null)
-    {
+    private function createUserByRole($role, $name = null, $email = null, $password = null) {
         switch ($role) {
             case 'driver':
                 return new Driver($name, $email, $password);
@@ -269,8 +265,7 @@ class AuthController extends Controller
         }
     }
 
-    private function createUserForRegistration($input)
-    {
+    private function createUserForRegistration($input) {
         switch ($input['role']) {
             case 'driver':
                 return new Driver(
@@ -283,7 +278,7 @@ class AuthController extends Controller
                     $input['experience'] ?? null,
                     $input['location'] ?? null
                 );
-
+            
             case 'guide':
                 return new Guide(
                     $input['name'] ?? null,
@@ -296,7 +291,7 @@ class AuthController extends Controller
                     $input['location'] ?? null,
                     $input['languages'] ?? null
                 );
-
+            
             case 'traveller':
                 return new Traveller(
                     $input['name'] ?? null,
@@ -304,7 +299,7 @@ class AuthController extends Controller
                     $input['password'] ?? null,
                     $input['phone'] ?? null
                 );
-
+            
             case 'admin':
                 return new Admin(
                     $input['name'] ?? null,
@@ -313,7 +308,7 @@ class AuthController extends Controller
                     $input['department'] ?? null,
                     $input['permissions'] ?? null
                 );
-
+            
             default:
                 return null;
         }

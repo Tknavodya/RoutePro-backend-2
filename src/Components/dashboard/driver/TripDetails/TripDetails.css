@@ -1,0 +1,46 @@
+.trip-details {
+  background-color: #eaf2f8;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.trip-details-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.trip-count { background: #2c3e50; color: #fff; border-radius: 20px; padding: 4px 10px; font-size: 12px; }
+.trip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+.trip-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(13, 38, 76, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trip-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(13, 38, 76, 0.12); }
+
+.trip-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #fff; }
+.status-badge.active { background-color: #28a745; }
+.status-badge.scheduled { background-color: #f39c12; }
+
+.trip-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* ✅ Adds space between buttons */
+  flex-wrap: wrap; /* ✅ Optional: make responsive on small screens */
+}
+
+.trip-actions button {
+  padding: 8px 14px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 130px; /* ✅ Optional: makes all buttons same width */
+}
+
+.trip-actions button:hover {
+  background-color: #218838;
+}

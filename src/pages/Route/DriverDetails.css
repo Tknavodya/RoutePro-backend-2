@@ -1,0 +1,312 @@
+/* Driver Details Page */
+.driver-details-page {
+  padding: 2rem;
+  background: #f5f5f5;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Main Window Container */
+.driver-details-window {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  width: 100%;
+  position: relative;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+/* Book Now Button - Top Right Corner */
+.book-now-corner {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #04614e;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.book-now-corner:hover {
+  background: #028a6c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(4, 97, 78, 0.3);
+}
+
+/* Main Content Layout */
+.driver-details-content {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+/* Left Section - Image and Reviews */
+.driver-left-section {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.driver-image-container {
+  margin-bottom: 1.5rem;
+}
+
+.driver-detail-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* Reviews Section Below Image */
+.driver-reviews-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e9ecef;
+}
+
+.driver-reviews-section h4 {
+  margin: 0 0 1rem 0;
+  color: #04614e;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  border-left: 3px solid #04614e;
+}
+
+.review-icon {
+  color: #04614e;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.review-text {
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* Right Section - Driver Details */
+.driver-right-section {
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.driver-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 1rem;
+}
+
+.driver-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #04614e;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.driver-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.star {
+  color: #ddd;
+  font-size: 1.2rem;
+}
+
+.star.filled {
+  color: #ffa500;
+}
+
+.rating-number {
+  color: #666;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+/* Driver Info Grid */
+.driver-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.info-icon {
+  color: #04614e;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-item label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  margin: 0;
+}
+
+.info-item span {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Driver Badges */
+.driver-badges {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.badge.verified {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.badge.recommended {
+  background: #fff3e0;
+  color: #f57c00;
+  border-color: #f57c00;
+}
+
+.badge.available {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.badge.unavailable {
+  background: #ffebee;
+  color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+/* Popup Overlays */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.popup-content button {
+  margin: 1rem 0.5rem 0 0.5rem;
+  padding: 0.75rem 2rem;
+  background: #04614e;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.popup-content button:hover {
+  background: #028a6c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .driver-details-page {
+    padding: 1rem;
+  }
+  
+  .driver-details-window {
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .book-now-corner {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .driver-details-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .driver-left-section {
+    flex: none;
+  }
+  
+  .driver-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .driver-header h2 {
+    font-size: 1.5rem;
+  }
+}

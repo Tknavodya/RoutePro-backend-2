@@ -391,6 +391,90 @@ try {
             break;
 
         // Admin routes
+        case '/admin/all-users':
+            if ($requestMethod === 'GET') {
+                // Simple test to get all users from database
+                try {
+                    $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+                    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    // Get all users with their roles
+                    $sql = "SELECT u.id, u.name, u.email, u.role, u.rating, u.created_at,
+                                   t.phone as traveller_phone,
+                                   d.phone as driver_phone, d.vehicle_type, d.experience as driver_experience, d.status as driver_status,
+                                   g.phone as guide_phone, g.languages, g.experience as guide_experience, g.status as guide_status
+                            FROM users u 
+                            LEFT JOIN travellers t ON u.id = t.user_id
+                            LEFT JOIN drivers d ON u.id = d.user_id  
+                            LEFT JOIN guides g ON u.id = g.user_id
+                            ORDER BY u.created_at DESC";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    // Group users by role
+                    $grouped = ['travelers' => [], 'drivers' => [], 'guides' => []];
+                    foreach ($users as $user) {
+                        if ($user['role'] === 'traveller') {
+                            $user['phone'] = $user['traveller_phone'];
+                            $grouped['travelers'][] = $user;
+                        } elseif ($user['role'] === 'driver') {
+                            $user['phone'] = $user['driver_phone'];
+                            $user['experience'] = $user['driver_experience'];
+                            $user['status'] = $user['driver_status'];
+                            $grouped['drivers'][] = $user;
+                        } elseif ($user['role'] === 'guide') {
+                            $user['phone'] = $user['guide_phone'];
+                            $user['experience'] = $user['guide_experience'];
+                            $user['status'] = $user['guide_status'];
+                            $grouped['guides'][] = $user;
+                        }
+                    }
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'users' => $grouped
+                    ]);
+                } catch (Exception $e) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Database error: ' . $e->getMessage()
+                    ]);
+                }
+            } else {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+            }
+            break;
+
+        case '/admin/users-list':
+            if ($requestMethod === 'GET') {
+                // Simple test without AdminController class
+                try {
+                    $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+                    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $sql = "SELECT id, name, email, role, rating, created_at FROM users ORDER BY created_at DESC";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'users' => $users
+                    ]);
+                } catch (Exception $e) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Database error: ' . $e->getMessage()
+                    ]);
+                }
+            } else {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+            }
+            break;
+
         case '/admin/users':
             if ($requestMethod === 'GET') {
                 $controller = new AdminController();
@@ -431,6 +515,16 @@ try {
             }
             break;
             
+        case '/admin/users/update-rating':
+            if ($requestMethod === 'PUT') {
+                $controller = new AdminController();
+                $controller->updateRating();
+            } else {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+            }
+            break;
+            
         case '/admin/stats':
             if ($requestMethod === 'GET') {
                 $controller = new AdminController();
@@ -452,6 +546,62 @@ try {
             break;
 
         // Default route
+        case '/admin-users-test':
+            if ($requestMethod === 'GET') {
+                // Simple test to get all users from database
+                try {
+                    $connection = new PDO("mysql:host=localhost;dbname=route_pro_db", "root", "pubz");
+                    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    // Get all users with their roles
+                    $sql = "SELECT u.id, u.name, u.email, u.role, u.rating, u.created_at,
+                                   t.phone as traveller_phone,
+                                   d.phone as driver_phone, d.vehicle_type, d.experience as driver_experience, d.status as driver_status,
+                                   g.phone as guide_phone, g.languages, g.experience as guide_experience, g.status as guide_status
+                            FROM users u 
+                            LEFT JOIN travellers t ON u.id = t.user_id
+                            LEFT JOIN drivers d ON u.id = d.user_id  
+                            LEFT JOIN guides g ON u.id = g.user_id
+                            ORDER BY u.created_at DESC";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    // Group users by role
+                    $grouped = ['travelers' => [], 'drivers' => [], 'guides' => []];
+                    foreach ($users as $user) {
+                        if ($user['role'] === 'traveller') {
+                            $user['phone'] = $user['traveller_phone'];
+                            $grouped['travelers'][] = $user;
+                        } elseif ($user['role'] === 'driver') {
+                            $user['phone'] = $user['driver_phone'];
+                            $user['experience'] = $user['driver_experience'];
+                            $user['status'] = $user['driver_status'];
+                            $grouped['drivers'][] = $user;
+                        } elseif ($user['role'] === 'guide') {
+                            $user['phone'] = $user['guide_phone'];
+                            $user['experience'] = $user['guide_experience'];
+                            $user['status'] = $user['guide_status'];
+                            $grouped['guides'][] = $user;
+                        }
+                    }
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'users' => $grouped
+                    ]);
+                } catch (Exception $e) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Database error: ' . $e->getMessage()
+                    ]);
+                }
+            } else {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+            }
+            break;
+
         case '/':
         case '':
             echo json_encode([

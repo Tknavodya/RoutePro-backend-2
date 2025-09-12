@@ -1,0 +1,19 @@
+main-content {
+  margin-top: 100px; /* or whatever your navbar height is */
+}
+
+.highlight {
+  color: #04614e; /* Teal green */
+  font-weight: bold;
+  text-align: center;
+  margin-top: 90px;
+}
+p {
+  max-width: 800px;
+  margin: 100px auto;
+  text-align: center;
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 90px;
+}

@@ -1,0 +1,60 @@
+.availability-panel {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.available {
+  color: green;
+}
+
+.unavailable {
+  color: red;
+}
+
+.driver-info input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ✅ Centered button container */
+.button-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* ✅ Base button style */
+.action-btn {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  min-width: 150px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+/* ✅ Dynamic colors based on status */
+.action-btn.available {
+  background-color: #c82333; /* Red */
+}
+
+.action-btn.available:hover {
+  background-color: #dc3545;
+}
+
+.action-btn.unavailable {
+  background-color: #218838; /* Green */
+}
+
+.action-btn.unavailable:hover {
+  background-color: #28a745;
+}
